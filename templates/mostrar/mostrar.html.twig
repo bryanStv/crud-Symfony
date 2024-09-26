@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<title>Libro</title>
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    <div class="example-wrapper">
+        <h1>Título: {{ libro.titulo }}</h1>
+
+        Información del libro
+        <ul>
+            <li>Autor: {{ libro.autor }}</li>
+            <li>Precio: {{ libro.precio }}</li>
+        </ul>
+    </div>
+{% endblock %}
