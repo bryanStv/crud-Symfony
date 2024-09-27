@@ -47,10 +47,45 @@ class PageController extends AbstractController
         ]);
     }
 
-    #[Route('/actualizar/{id}/{titulo}/',name: 'actualizar')]
-    public function actualizar(int $id,string $titulo,Libro $libro,ManagerRegistry $doctrine){
+    #[Route('/actualizar/{id}/{titulo}/{autor}',name: 'actualizar')]
+    public function actualizar(int $id,string $titulo,string $autor,Libro $libro,ManagerRegistry $doctrine){
         $entityManager = $doctrine->getManager();
-        $libro->setTitulo($titulo);
+        $repositorio = $doctrine->getRepository(Libro::class);
+        $libro = $repositorio->find($id);
+
+        if($libro){
+            $libro->setTitulo($titulo);
+            $libro->setAutor($autor);
+            try{
+                $entityManager->flush();
+                return $this->render('mostrar/mostrar.html.twig', [
+                    'libro' => $libro
+                ]);
+
+            }catch (\Exception $e){
+                return new Response("Libro no actualizado de forma correcta");
+            }
+        }else{
+            return new Response("Libro no encontrado");
+        }
+    }
+
+    #[Route('/borrar/{id}',name: 'borrar')]
+    public function borrar(int $id,ManagerRegistry $doctrine){
+        $entityManager = $doctrine->getManager();
+        $repositorio = $doctrine->getRepository(Libro::class);
+        $libro = $repositorio->find($id);
+        if($libro){
+            try{
+                $entityManager->remove($libro);
+                $entityManager->flush();
+                return new Response("Libro borrado");
+            }catch (\Exception $e){
+                return new Response("Libro no eliminado de forma correcta");
+            }
+        }else{
+            return new Response("Libro no encontrado");
+        }
     }
 
     #[Route('/page', name: 'app_page')]
