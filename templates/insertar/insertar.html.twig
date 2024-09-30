@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+
+<title>Libro</title>
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+        *{
+            background-color: #1e293b;
+            color: #0dcaf0;
+        }
+    </style>
+
+    <div class="example-wrapper">
+        <h1>Añadir Libro</h1>
+
+        <form action="http://localhost:8080/insertar/" method="post">
+            <label for="titulo">Título</label>
+            <input type="text" id="titulo" name="titulo"><br>
+            <label for="autor">Autor</label>
+            <input type="text" id="autor" name="autor"><br>
+            <label for="precio">Precio</label>
+            <input type="text" id="precio" name="precio"><br>
+
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
+{% endblock %}

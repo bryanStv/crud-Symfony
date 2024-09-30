@@ -6,10 +6,46 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Libro;
+use App\Entity\Editorial;
 use Doctrine\Persistence\ManagerRegistry;
 
 class PageController extends AbstractController
 {
+
+/*    #[Route('/addForm/',name:'addForm')]
+    public function addForm(ManagerRegistry $doctrine){
+        return $this->render('insertar/insertar.html.twig', []);
+    }*/
+
+    #[Route('/insertarEditorial/{name}',name:'insertarEditorial')]
+    public function insertarEditorial(string $name,ManagerRegistry $doctrine){
+        $entityManager = $doctrine->getManager();
+        try{
+            $editorial = new Editorial();
+            $editorial->setName($name);
+            $entityManager->persist($editorial);
+            $entityManager->flush();
+            return new Response("Editorial insertada");
+        }catch (\Exception $e){
+            return new Response("Error al insertar");
+        }
+    }
+
+    #[Route('/editorialLibro/{idEdit}/{idLibro}',name:'editorialLibro')]
+    public function editorialLibro(string $idEdit,string $idLibro,ManagerRegistry $doctrine){
+        $entityManager = $doctrine->getManager();
+        try{
+            $libro = $entityManager->getRepository(Libro::class)->find($idLibro);
+            $editorial = $entityManager->getRepository(Editorial::class)->find($idEdit);
+            $libro->setEditorial($editorial);
+            $editorial -> addNombre($libro);
+            $entityManager->persist($editorial);
+            $entityManager->flush();
+            return new Response("Editorial añadida a libro");
+        }catch (\Exception $e){
+            return new Response("Error al insertar");
+        }
+    }
 
     #[Route('/insertar/{titulo}/{autor}/{precio}',name: 'insertar')]
     public function insertar(string $titulo,string $autor,int $precio,ManagerRegistry $doctrine){
@@ -21,7 +57,7 @@ class PageController extends AbstractController
         $entityManager->persist($libro);
         try{
             $entityManager->flush();
-            return new Response("Contacto insertado");
+            return new Response("Libro insertado");
         }catch (\Exception $e){
             return new Response("Error al insertar");
         }

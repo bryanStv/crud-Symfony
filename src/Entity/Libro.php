@@ -22,6 +22,9 @@ class Libro
     #[ORM\Column]
     private ?int $precio = null;
 
+    #[ORM\ManyToOne(inversedBy: 'nombre')]
+    private ?Editorial $editorial = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class Libro
     public function setPrecio(int $precio): self
     {
         $this->precio = $precio;
+
+        return $this;
+    }
+
+    public function getEditorial(): ?Editorial
+    {
+        return $this->editorial;
+    }
+
+    public function setEditorial(?Editorial $editorial): self
+    {
+        $this->editorial = $editorial;
 
         return $this;
     }
