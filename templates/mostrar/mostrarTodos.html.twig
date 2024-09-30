@@ -21,6 +21,8 @@
             <li>ID: {{ libro.id }}</li>
             <li>Autor: {{ libro.autor }}</li>
             <li>Precio: {{ libro.precio }}€</li>
+            <li>ID Editorial: {{ libro.editorial.id }}</li>
+            <li>Editorial: {{ libro.editorial.name }}</li>
         </ul>
     </div>
     {% endfor %}

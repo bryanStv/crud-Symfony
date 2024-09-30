@@ -78,6 +78,7 @@ class PageController extends AbstractController
     public function mostrarTodos(ManagerRegistry $doctrine){
         $repositorio = $doctrine->getRepository(Libro::class);
         $libros = $repositorio->findAll();
+        //$editorial = $repositorio->findAll();
         return $this->render('mostrar/mostrarTodos.html.twig', [
             'libros' => $libros
         ]);
