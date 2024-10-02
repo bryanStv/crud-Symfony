@@ -14,11 +14,14 @@ class Libro
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Debe ingresar un titulo")]
     private ?string $titulo = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Debe ingresar un autor")]
     private ?string $autor = null;
 
+    //#[Assert\Type(type: 'integer', message: 'El valor debe ser un número entero.')]
     #[ORM\Column]
     private ?int $precio = null;
 
