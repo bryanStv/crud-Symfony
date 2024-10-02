@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Form\LibroFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Libro;
 use App\Entity\Editorial;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Request;
 
 class PageController extends AbstractController
 {
@@ -46,8 +48,25 @@ class PageController extends AbstractController
             return new Response("Error al insertar");
         }
     }
+    #[Route('/insertar',name: 'insertar')]
+    public function insertar(ManagerRegistry $doctrine,Request $request):Response
+    {
+        $libro = new Libro();
+        $form = $this->createForm(LibroFormType::class, $libro);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $libro = $form->getData();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($libro);
+            $entityManager->flush();
+            return $this->redirectToRoute('index', []);
+        }
+        return $this->render('insertar/insertar.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
 
-    #[Route('/insertar/{titulo}/{autor}/{precio}',name: 'insertar')]
+    /*#[Route('/insertar/{titulo}/{autor}/{precio}',name: 'insertar')]
     public function insertar(string $titulo,string $autor,int $precio,ManagerRegistry $doctrine){
         $entityManager = $doctrine->getManager();
         $libro = new Libro();
@@ -61,7 +80,7 @@ class PageController extends AbstractController
         }catch (\Exception $e){
             return new Response("Error al insertar");
         }
-    }
+    }*/
 
     #[Route('/mostrar/{id}',name: 'mostrar')]
     public function mostrar(int $id,ManagerRegistry $doctrine){
@@ -78,7 +97,7 @@ class PageController extends AbstractController
     public function mostrarTodos(ManagerRegistry $doctrine){
         $repositorio = $doctrine->getRepository(Libro::class);
         $libros = $repositorio->findAll();
-        //$editorial = $repositorio->findAll();
+
         return $this->render('mostrar/mostrarTodos.html.twig', [
             'libros' => $libros
         ]);

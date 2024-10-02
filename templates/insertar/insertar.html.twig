@@ -15,15 +15,31 @@
     <div class="example-wrapper">
         <h1>Añadir Libro</h1>
 
-        <form action="http://localhost:8080/insertar/" method="post">
-            <label for="titulo">Título</label>
-            <input type="text" id="titulo" name="titulo"><br>
-            <label for="autor">Autor</label>
-            <input type="text" id="autor" name="autor"><br>
-            <label for="precio">Precio</label>
-            <input type="text" id="precio" name="precio"><br>
-
-            <input type="submit" value="Enviar">
-        </form>
+        {{ form_start(form, {'attr': {'class':'form-horizontal'}}) }}
+        {{ form_errors(form) }}
+        <div class="form-group">
+            <div class="col-xs-6">
+                {{ form_row(form.titulo, {'attr': {'class':'form-control'}}) }}
+            </div>
+            <div class="col-xs-6">
+                {{ form_row(form.autor, {'attr': {'class':'form-control'}}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-12">
+                {{ form_row(form.precio, {'attr': {'class':'form-control'}}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-12">
+                {{ form_row(form.editorial, {'attr': {'class':'form-control'}}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-12">
+                {{ form_row(form.Send, {'attr': {'class':'pull-right btn btn-lg sr-button'}}) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
     </div>
 {% endblock %}
