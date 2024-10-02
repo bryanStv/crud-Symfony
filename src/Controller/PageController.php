@@ -59,7 +59,7 @@ class PageController extends AbstractController
             $entityManager = $doctrine->getManager();
             $entityManager->persist($libro);
             $entityManager->flush();
-            return $this->redirectToRoute('index', []);
+            return $this->redirectToRoute('mostrarTodos', []);
         }
         return $this->render('insertar/insertar.html.twig', array(
             'form' => $form->createView()
@@ -103,7 +103,25 @@ class PageController extends AbstractController
         ]);
     }
 
-    #[Route('/actualizar/{id}/{titulo}/{autor}',name: 'actualizar')]
+    #[Route('/actualizar/{id}',name: 'actualizar')]
+    public function actualizar(int $id,ManagerRegistry $doctrine,Request $request) :Response{
+        $entityManager = $doctrine->getManager();
+        $libro = $entityManager->getRepository(Libro::class)->find($id);
+        $form = $this->createForm(LibroFormType::class, $libro);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $libro = $form->getData();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($libro);
+            $entityManager->flush();
+            return $this->redirectToRoute('mostrarTodos', []);
+        }
+        return $this->render('insertar/insertar.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+
+    /*#[Route('/actualizar/{id}/{titulo}/{autor}',name: 'actualizar')]
     public function actualizar(int $id,string $titulo,string $autor,Libro $libro,ManagerRegistry $doctrine){
         $entityManager = $doctrine->getManager();
         $repositorio = $doctrine->getRepository(Libro::class);
@@ -124,7 +142,7 @@ class PageController extends AbstractController
         }else{
             return new Response("Libro no encontrado");
         }
-    }
+    }*/
 
     #[Route('/borrar/{id}',name: 'borrar')]
     public function borrar(int $id,ManagerRegistry $doctrine){
