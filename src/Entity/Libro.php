@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\LibroRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LibroRepository::class)]
 class Libro
@@ -21,7 +22,8 @@ class Libro
     #[Assert\NotBlank(message:"Debe ingresar un autor")]
     private ?string $autor = null;
 
-    //#[Assert\Type(type: 'integer', message: 'El valor debe ser un número entero.')]
+    #[Assert\Type(type: 'integer', message: 'El valor debe ser un número entero.')]
+    #[Assert\NotBlank(message:"Debe ingresar un precio")]
     #[ORM\Column]
     private ?int $precio = null;
 
