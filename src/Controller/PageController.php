@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\EditorialFormType;
 use App\Form\LibroFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,8 +20,23 @@ class PageController extends AbstractController
         return $this->render('insertar/insertar.html.twig', []);
     }*/
 
-    #[Route('/insertarEditorial/{name}',name:'insertarEditorial')]
-    public function insertarEditorial(string $name,ManagerRegistry $doctrine){
+    #[Route('/insertarEditorial/',name:'insertarEditorial')]
+    public function insertarEditorial(ManagerRegistry $doctrine,Request $request){
+        $editorial = new Editorial();
+        $form = $this->createForm(EditorialFormType::class, $editorial);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $libro = $form->getData();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($editorial);
+            $entityManager->flush();
+            return $this->redirectToRoute('mostrarTodos', []);
+        }
+        return $this->render('insertar/insertarEditorial.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
+    /*public function insertarEditorial(string $name,ManagerRegistry $doctrine){
         $entityManager = $doctrine->getManager();
         try{
             $editorial = new Editorial();
@@ -31,7 +47,7 @@ class PageController extends AbstractController
         }catch (\Exception $e){
             return new Response("Error al insertar");
         }
-    }
+    }*/
 
     #[Route('/editorialLibro/{idEdit}/{idLibro}',name:'editorialLibro')]
     public function editorialLibro(string $idEdit,string $idLibro,ManagerRegistry $doctrine){

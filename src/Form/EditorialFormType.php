@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Editorial;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,6 +14,7 @@ class EditorialFormType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('Send', SubmitType::class, array('label' => 'Enviar'));
         ;
     }
 

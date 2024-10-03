@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<title>Libro</title>
+<title>Editorial</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
 {% block body %}
@@ -33,27 +33,22 @@
             background-color: #0056b3;
         }
     </style>
-    <!--<style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-        *{
-            background-color: #1e293b;
-            color: #0dcaf0;
-        }
-    </style>-->
 
-    {% for libro in libros %}
     <div class="example-wrapper">
-        <h1>Título: {{ libro.titulo }}</h1>
+        <h1>Añadir Editorial</h1>
 
-        Información del libro
-        <ul>
-            <li>ID: {{ libro.id }}</li>
-            <li>Autor: {{ libro.autor }}</li>
-            <li>Precio: {{ libro.precio }}€</li>
-            <li>ID Editorial: {{ libro.editorial.id }}</li>
-            <li>Editorial: {{ libro.editorial.name }}</li>
-        </ul>
+        {{ form_start(form, {'attr': {'class':'form-horizontal'}}) }}
+        {{ form_errors(form) }}
+        <div class="form-group">
+            <div class="col-xs-6">
+                {{ form_row(form.name, {'attr': {'class':'form-control'}}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-12">
+                {{ form_row(form.Send, {'attr': {'class':'pull-right btn btn-lg sr-button'}}) }}
+            </div>
+        </div>
+        {{ form_end(form) }}
     </div>
-    {% endfor %}
 {% endblock %}
