@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\EditorialFormType;
 use App\Form\LibroFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -116,6 +117,29 @@ class PageController extends AbstractController
 
         return $this->render('mostrar/mostrarTodos.html.twig', [
             'libros' => $libros
+        ]);
+    }
+
+    #[Route('/mostrarLibros/',name: 'mostrarLibros')]
+    public function mostrarLibros(ManagerRegistry $doctrine){
+        $repositorio = $doctrine->getRepository(Libro::class);
+        $libros = $repositorio->findAll();
+        $repositorio = $doctrine->getRepository(User::class);
+        $users = $repositorio->findAll();
+
+        return $this->render('login/mostrarLibros.html.twig', [
+            'libros' => $libros,
+            'users' => $users
+        ]);
+    }
+
+    #[Route('/allUsers',name: 'allUsers')]
+    public function allUsers(ManagerRegistry $doctrine){
+        $repositorio = $doctrine->getRepository(User::class);
+        $users = $repositorio->findAll();
+
+        return $this->render('login/mostrarUsuarios.html.twig', [
+            'users' => $users
         ]);
     }
 
