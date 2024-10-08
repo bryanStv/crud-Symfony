@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\EditorialFormType;
 use App\Form\LibroFormType;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,6 +38,30 @@ class PageController extends AbstractController
             'form' => $form->createView()
         ));
     }
+
+    #[Route('/panelUsuarios/{id}',name:'panelUsuarios')]
+    public function panelUsers(ManagerRegistry $doctrine,Request $request,int $id){
+        $repositorio = $doctrine->getRepository(User::class);
+
+        $usuario = $repositorio->find($id);
+
+        return $this->render('mostrar/panelUsuarios.html.twig', [
+            'usuario' => $usuario
+        ]);
+    }
+
+    #[Route('/darPermisos/{id}',name:'darPermisos')]
+    public function darPermisos(int $id,ManagerRegistry $doctrine,Request $request){
+        $repositorio = $doctrine->getRepository(User::class);
+
+        $usuario = $repositorio->find($id);
+
+        $usuario.setRoles("ROLE_ADMIN");
+        $entityManager = $doctrine->getManager();
+        $entityManager->persist($usuario);
+        $entityManager->flush();
+    }
+
     /*public function insertarEditorial(string $name,ManagerRegistry $doctrine){
         $entityManager = $doctrine->getManager();
         try{

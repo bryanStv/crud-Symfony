@@ -34,6 +34,7 @@
                 {% if app.user %}
                     <li>{{ app.user }}</li>
                     <li><a href="{{ path('app_logout') }}">Cerrar Sesión</a></li>
+                    <li><a href="{{ path('panelUsuarios', { 'id': app.user.id }) }}">Dashboard</a></li>
                 {% else %}
                     <li><a href="{{ path('login') }}">Login</a></li>
                     <li><a href="{{ path('app_register') }}">Registrarte</a></li>
