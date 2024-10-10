@@ -6,13 +6,34 @@
 
     <section>
         <h2>ID: {{ usuario.id }}</h2>
+        <h2>BIENVENIDO A TU PANEL DE USUARIO</h2>
+        <p>Nuevas funciones próximamente</p>
 
         {% if is_granted('ROLE_ADMIN') %}
-            <p>Soy Administrador</p>
+            <br>
+            <h2>Panel de control de Administradores</h2>
             <a href="{{ path('insertarEditorial') }}">Añadir editorial</a><br>
             <a href="{{ path('insertar') }}">Añadir libro</a><br>
-        {% else %}
-            <p>No soy Administrador</p>
+            <h3>GESTIÓN DE USUARIOS</h3>
+            {% for user in usuarios %}
+            <div class="example-wrapper">
+                {% if user.id != usuario.id %}
+                <h2>INFORMACIÓN DEL USUARIO:</h2>
+                <ul>
+                    <li>ID: {{ user.id }}</li>
+                    <li>Correo: {{ user.email }}</li>
+                    {% if 'ROLE_ADMIN' in user.roles %}
+                        <li>Administrador: SI</li>
+                        <a href="{{ path('quitarPermisos', { 'id': user.id,'idUserActual': usuario.id}) }}">Quitar permisos de Administrador</a><br>
+                    {% else %}
+                        <li>Administrador: NO</li>
+                        <a href="{{ path('darPermisos', { 'id': user.id,'idUserActual': usuario.id}) }}">Dar permisos de Administrador</a><br>
+                    {% endif %}
+                </ul>
+                {% endif %}
+            </div>
+        {% endfor %}
+
         {% endif %}
     </section>
 

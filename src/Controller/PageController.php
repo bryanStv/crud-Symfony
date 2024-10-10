@@ -43,23 +43,59 @@ class PageController extends AbstractController
     public function panelUsers(ManagerRegistry $doctrine,Request $request,int $id){
         $repositorio = $doctrine->getRepository(User::class);
 
+        $usuarios = $repositorio->findAll();
         $usuario = $repositorio->find($id);
 
         return $this->render('mostrar/panelUsuarios.html.twig', [
-            'usuario' => $usuario
+            'usuario' => $usuario,
+            'usuarios' => $usuarios
         ]);
     }
 
-    #[Route('/darPermisos/{id}',name:'darPermisos')]
-    public function darPermisos(int $id,ManagerRegistry $doctrine,Request $request){
+    #[Route('/darPermisos/{id}/{idUserActual}', name: 'darPermisos')]
+    public function darPermisos(int $id,int $idUserActual, ManagerRegistry $doctrine): Response
+    {
         $repositorio = $doctrine->getRepository(User::class);
-
         $usuario = $repositorio->find($id);
+        $usuarioActual = $repositorio->find($idUserActual);
 
-        $usuario.setRoles("ROLE_ADMIN");
-        $entityManager = $doctrine->getManager();
-        $entityManager->persist($usuario);
-        $entityManager->flush();
+        if (!$usuario) {
+            throw $this->createNotFoundException('Usuario no encontrado.');
+        }
+
+        $roles = $usuario->getRoles();
+        if (!in_array('ROLE_ADMIN', $roles)) {
+            $roles[] = 'ROLE_ADMIN';
+            $usuario->setRoles($roles);
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($usuario);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('panelUsuarios',['id' => $usuarioActual->getId()]);
+    }
+
+    #[Route('/quitarPermisos/{id}/{idUserActual}', name: 'quitarPermisos')]
+    public function quitarPermisos(int $id,int $idUserActual, ManagerRegistry $doctrine): Response
+    {
+        $repositorio = $doctrine->getRepository(User::class);
+        $usuario = $repositorio->find($id);
+        $usuarioActual = $repositorio->find($idUserActual);
+    
+        if (!$usuario) {
+            throw $this->createNotFoundException('Usuario no encontrado.');
+        }
+
+        $roles = $usuario->getRoles();
+        if (in_array('ROLE_ADMIN', $roles)) {
+            $roles = array_diff($roles, ['ROLE_ADMIN']);
+            $usuario->setRoles($roles);
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($usuario);
+            $entityManager->flush();
+        }
+    
+        return $this->redirectToRoute('panelUsuarios',['id' => $usuarioActual->getId()]);
     }
 
     /*public function insertarEditorial(string $name,ManagerRegistry $doctrine){
