@@ -111,7 +111,7 @@ class PageController extends AbstractController
         }
     }*/
 
-    #[Route('/editorialLibro/{idEdit}/{idLibro}',name:'editorialLibro')]
+    /*#[Route('/editorialLibro/{idEdit}/{idLibro}',name:'editorialLibro')]
     public function editorialLibro(string $idEdit,string $idLibro,ManagerRegistry $doctrine){
         $entityManager = $doctrine->getManager();
         try{
@@ -125,7 +125,7 @@ class PageController extends AbstractController
         }catch (\Exception $e){
             return new Response("Error al insertar");
         }
-    }
+    }*/
     #[Route('/insertar',name: 'insertar')]
     public function insertar(ManagerRegistry $doctrine,Request $request):Response
     {
@@ -171,7 +171,7 @@ class PageController extends AbstractController
         ]);
     }
 
-    #[Route('/mostrarTodos/',name: 'mostrarTodos')]
+    /*#[Route('/mostrarTodos/',name: 'mostrarTodos')]
     public function mostrarTodos(ManagerRegistry $doctrine){
         $repositorio = $doctrine->getRepository(Libro::class);
         $libros = $repositorio->findAll();
@@ -179,8 +179,9 @@ class PageController extends AbstractController
         return $this->render('mostrar/mostrarTodos.html.twig', [
             'libros' => $libros
         ]);
-    }
+    }*/
 
+    //Clase principal
     #[Route('/mostrarLibros/',name: 'mostrarLibros')]
     public function mostrarLibros(ManagerRegistry $doctrine){
         $repositorio = $doctrine->getRepository(Libro::class);
