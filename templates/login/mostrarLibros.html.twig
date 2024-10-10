@@ -43,18 +43,38 @@
         </nav>
     </header>
 
-    {% for libro in libros %}
-        <div class="example-wrapper">
-            <h2>Título: {{ libro.titulo }}</h2>
+    {% if is_granted('ROLE_ADMIN') %}
+        {% for libro in libros %}
+            <div class="example-wrapper">
+                <h2>Título: {{ libro.titulo }}</h2>
 
-            Información del libro
-            <ul>
-                <li>ID: {{ libro.id }}</li>
-                <li>Autor: {{ libro.autor }}</li>
-                <li>Precio: {{ libro.precio }}€</li>
-                <li>ID Editorial: {{ libro.editorial.id }}</li>
-                <li>Editorial: {{ libro.editorial.name }}</li>
-            </ul>
-        </div>
-    {% endfor %}
+                Información del libro
+                <ul>
+                    <li>ID: {{ libro.id }}</li>
+                    <li>Autor: {{ libro.autor }}</li>
+                    <li>Precio: {{ libro.precio }}€</li>
+                    <li>ID Editorial: {{ libro.editorial.id }}</li>
+                    <li>Editorial: {{ libro.editorial.name }}</li>
+                </ul>
+                <br>
+                <a href="{{ path('actualizar', { 'id': libro.id }) }}">Modificar libro</a><br>
+                <a href="{{ path('borrar', { 'id': libro.id }) }}">Borrar libro</a>
+            </div>
+        {% endfor %}
+    {% else %}
+        {% for libro in libros %}
+            <div class="example-wrapper">
+                <h2>Título: {{ libro.titulo }}</h2>
+
+                Información del libro
+                <ul>
+                    <li>ID: {{ libro.id }}</li>
+                    <li>Autor: {{ libro.autor }}</li>
+                    <li>Precio: {{ libro.precio }}€</li>
+                    <li>ID Editorial: {{ libro.editorial.id }}</li>
+                    <li>Editorial: {{ libro.editorial.name }}</li>
+                </ul>
+            </div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}

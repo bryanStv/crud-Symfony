@@ -2,18 +2,17 @@
 {% block title %} Dashboard {{ app.user }} {% endblock %}
 
 {% block body %}
-    <header><h1>Panel de control usuario: {{ usuario.email }}</h1></header>
+    <header><h1>Panel de control<br>Usuario: {{ usuario.email }}</h1></header>
 
     <section>
         <h2>ID: {{ usuario.id }}</h2>
 
         {% if is_granted('ROLE_ADMIN') %}
             <p>Soy Administrador</p>
+            <a href="{{ path('insertarEditorial') }}">Añadir editorial</a><br>
+            <a href="{{ path('insertar') }}">Añadir libro</a><br>
         {% else %}
             <p>No soy Administrador</p>
-            {# <button href="{{  }}">Añadir Rol de Administración</button>#}
-{#  {% for libro in libros %}
-            {% endfor %}#}
         {% endif %}
     </section>
 

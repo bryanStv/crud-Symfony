@@ -32,7 +32,7 @@ class PageController extends AbstractController
             $entityManager = $doctrine->getManager();
             $entityManager->persist($editorial);
             $entityManager->flush();
-            return $this->redirectToRoute('mostrarTodos', []);
+            return $this->redirectToRoute('mostrarLibros', []);
         }
         return $this->render('insertar/insertarEditorial.html.twig', array(
             'form' => $form->createView()
@@ -101,7 +101,7 @@ class PageController extends AbstractController
             $entityManager = $doctrine->getManager();
             $entityManager->persist($libro);
             $entityManager->flush();
-            return $this->redirectToRoute('mostrarTodos', []);
+            return $this->redirectToRoute('mostrarLibros', []);
         }
         return $this->render('insertar/insertar.html.twig', array(
             'form' => $form->createView()
@@ -179,7 +179,7 @@ class PageController extends AbstractController
             $entityManager = $doctrine->getManager();
             $entityManager->persist($libro);
             $entityManager->flush();
-            return $this->redirectToRoute('mostrarTodos', []);
+            return $this->redirectToRoute('mostrarLibros', []);
         }
         return $this->render('insertar/insertar.html.twig', array(
             'form' => $form->createView()
@@ -209,7 +209,7 @@ class PageController extends AbstractController
         }
     }*/
 
-    #[Route('/borrar/{id}',name: 'borrar')]
+    /*#[Route('/borrar/{id}',name: 'borrar')]
     public function borrar(int $id,ManagerRegistry $doctrine){
         $entityManager = $doctrine->getManager();
         $repositorio = $doctrine->getRepository(Libro::class);
@@ -219,6 +219,24 @@ class PageController extends AbstractController
                 $entityManager->remove($libro);
                 $entityManager->flush();
                 return new Response("Libro borrado");
+            }catch (\Exception $e){
+                return new Response("Libro no eliminado de forma correcta");
+            }
+        }else{
+            return new Response("Libro no encontrado");
+        }
+    }*/
+
+    #[Route('/borrar/{id}',name: 'borrar')]
+    public function borrar(int $id,ManagerRegistry $doctrine){
+        $entityManager = $doctrine->getManager();
+        $repositorio = $doctrine->getRepository(Libro::class);
+        $libro = $repositorio->find($id);
+        if($libro){
+            try{
+                $entityManager->remove($libro);
+                $entityManager->flush();
+                return $this->redirectToRoute('mostrarLibros', []);
             }catch (\Exception $e){
                 return new Response("Libro no eliminado de forma correcta");
             }
